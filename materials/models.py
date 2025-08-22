@@ -3,7 +3,7 @@ from django.db import models
 from users.models import User
 
 
-class Сourse(models.Model):
+class Course(models.Model):
     title_course = models.CharField(max_length=50, verbose_name="название курса")
     image_course = models.ImageField(
         upload_to="materials/images/",
@@ -30,8 +30,8 @@ class Lesson(models.Model):
         verbose_name="превью урока",
     )
     description_lesson = models.TextField(blank=True, null=True, verbose_name="Описание")
-    video_link = models.URLField(verbose_name="ссылка на видео урока")
-    course = models.ForeignKey(Сourse, on_delete=models.SET_NULL, verbose_name='курс', null=True, blank=True,
+    video_link = models.URLField(blank=True, null=True, verbose_name="ссылка на видео урока")
+    course = models.ForeignKey(Course, on_delete=models.SET_NULL, verbose_name='курс', null=True, blank=True,
                                  related_name='lessons')
     owner = models.ForeignKey(User, on_delete=models.SET_NULL, verbose_name='владелец', null=True, blank=True,
                               related_name='lessons')
