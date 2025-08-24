@@ -41,21 +41,28 @@ class Payment(models.Model):
     cash = "Наличные"
     transfer = "Перевод на счет"
     method_payment_choices = [(cash, "Наличные"), (transfer, "Перевод на счет")]
-    user = models.ForeignKey(User,
-                             on_delete=models.CASCADE,
-                             verbose_name="пользователь",
-                             null=True,
-                             blank=True
-                             )
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name="пользователь",
+        null=True,
+        blank=True,
+    )
     date_payment = models.DateField(verbose_name="дата оплаты")
-    course = models.ForeignKey(Course, on_delete=models.CASCADE,
-                               verbose_name="купленный курс",
-                               null=True,
-                               blank=True)
-    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE,
-                               verbose_name="купленный урок",
-                               null=True,
-                               blank=True)
+    course = models.ForeignKey(
+        Course,
+        on_delete=models.CASCADE,
+        verbose_name="купленный курс",
+        null=True,
+        blank=True,
+    )
+    lesson = models.ForeignKey(
+        Lesson,
+        on_delete=models.CASCADE,
+        verbose_name="купленный урок",
+        null=True,
+        blank=True,
+    )
     sum_payment = models.FloatField(verbose_name="сумма оплаты")
     method_payment = models.CharField(
         max_length=30,

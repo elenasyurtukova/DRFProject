@@ -9,6 +9,7 @@ class CourseAdmin(admin.ModelAdmin):
     list_filter = ("title_course", "description_course")
     search_fields = ("title_course", "description_course")
 
+
 @admin.register(Lesson)
 class LessonAdmin(admin.ModelAdmin):
     list_display = ("id", "title_lesson", "description_lesson", "course")
