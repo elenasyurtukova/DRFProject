@@ -9,10 +9,16 @@ class LessonSerializer(ModelSerializer):
         model = Lesson
         fields = "__all__"
 
+
 class LessonShortSerializer(ModelSerializer):
     class Meta:
         model = Lesson
-        fields = ("id", "title_lesson", "description_lesson",)
+        fields = (
+            "id",
+            "title_lesson",
+            "description_lesson",
+        )
+
 
 class CourseSerializer(ModelSerializer):
     lessons_count = serializers.SerializerMethodField()
