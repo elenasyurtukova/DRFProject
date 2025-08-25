@@ -48,7 +48,7 @@ class Payment(models.Model):
         null=True,
         blank=True,
     )
-    date_payment = models.DateField(verbose_name="дата оплаты")
+    date_payment = models.DateTimeField(verbose_name="дата оплаты")
     course = models.ForeignKey(
         Course,
         on_delete=models.CASCADE,
@@ -63,7 +63,7 @@ class Payment(models.Model):
         null=True,
         blank=True,
     )
-    sum_payment = models.FloatField(verbose_name="сумма оплаты")
+    sum_payment = models.PositiveIntegerField(verbose_name="сумма оплаты")
     method_payment = models.CharField(
         max_length=30,
         choices=method_payment_choices,
