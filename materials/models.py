@@ -1,7 +1,5 @@
 from django.db import models
 
-from users.models import User
-
 
 class Course(models.Model):
     title_course = models.CharField(max_length=50, verbose_name="название курса")
@@ -46,19 +44,11 @@ class Lesson(models.Model):
         blank=True,
         related_name="lessons",
     )
-    owner = models.ForeignKey(
-        User,
-        on_delete=models.SET_NULL,
-        verbose_name="владелец",
-        null=True,
-        blank=True,
-        related_name="lessons",
-    )
 
     class Meta:
         verbose_name = "Урок"
         verbose_name_plural = "Уроки"
-        ordering = ["title_lesson", "course", "owner"]
+        ordering = ["title_lesson", "course"]
 
     def __str__(self):
         return self.title_lesson
