@@ -1,9 +1,9 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
-from rest_framework.generics import ListAPIView, UpdateAPIView
+from rest_framework.generics import ListAPIView, UpdateAPIView, CreateAPIView
 
-from users.models import Payment
-from users.serializers import PaymentSerializer
+from users.models import Payment, User
+from users.serializers import PaymentSerializer, UserSerializer
 
 
 class PaymentListAPIView(ListAPIView):
@@ -17,3 +17,12 @@ class PaymentListAPIView(ListAPIView):
 class PaymentUpdateApiView(UpdateAPIView):
     queryset = Payment.objects.all()
     serializer_class = PaymentSerializer
+
+class UserCreateApiView(CreateAPIView):
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
+
+    def perform_create(self, serializer):
+        user = serializer.save(is_active=True)
+        user.set_password(user.password) #хешируем пароль пользователя, чтобы не хранить его в открытом виде
+        user.save()

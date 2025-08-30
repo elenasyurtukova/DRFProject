@@ -4,7 +4,7 @@ TokenObtainPairView, TokenRefreshView,
 )
 
 from users.apps import UsersConfig
-from users.views import PaymentListAPIView, PaymentUpdateApiView
+from users.views import PaymentListAPIView, PaymentUpdateApiView, UserCreateApiView
 
 app_name = UsersConfig.name
 
@@ -15,6 +15,7 @@ urlpatterns = [
         PaymentUpdateApiView.as_view(),
         name="payment_update",
     ),
-    path("token/", TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path("register/", UserCreateApiView.as_view(), name='register'),
+    path("login/", TokenObtainPairView.as_view(), name='login'),
     path("token/refresh/", TokenRefreshView.as_view(), name='token_refresh'),
 ]
