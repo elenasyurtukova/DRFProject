@@ -4,10 +4,10 @@
     "pk": 1,
     "fields": {
         "user": 2,
-        "date_payment": "2025-01-24",
+        "date_payment": "2025-01-24T10:05:00Z",
         "course": 2,
         "lesson": null,
-        "sum_payment": 200000.0,
+        "sum_payment": 200000,
         "method_payment": "Перевод на счет"
     }
 },
@@ -16,10 +16,10 @@
     "pk": 2,
     "fields": {
         "user": 2,
-        "date_payment": "2025-03-20",
+        "date_payment": "2025-03-20T08:18:00Z",
         "course": null,
         "lesson": 5,
-        "sum_payment": 15000.0,
+        "sum_payment": 15000,
         "method_payment": "Наличные"
     }
 },
@@ -28,10 +28,10 @@
     "pk": 3,
     "fields": {
         "user": 3,
-        "date_payment": "2024-12-15",
+        "date_payment": "2024-12-15T22:10:00Z",
         "course": 3,
         "lesson": null,
-        "sum_payment": 150000.0,
+        "sum_payment": 150000,
         "method_payment": "Наличные"
     }
 },
@@ -40,10 +40,10 @@
     "pk": 4,
     "fields": {
         "user": 3,
-        "date_payment": "2025-02-10",
+        "date_payment": "2025-02-10T03:09:00Z",
         "course": null,
         "lesson": 2,
-        "sum_payment": 20000.0,
+        "sum_payment": 20000,
         "method_payment": "Перевод на счет"
     }
 },
@@ -52,10 +52,10 @@
     "pk": 5,
     "fields": {
         "user": 3,
-        "date_payment": "2025-03-20",
+        "date_payment": "2025-03-20T12:03:00Z",
         "course": null,
         "lesson": 3,
-        "sum_payment": 19000.0,
+        "sum_payment": 19000,
         "method_payment": "Перевод на счет"
     }
 }

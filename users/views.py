@@ -1,9 +1,10 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView, UpdateAPIView, RetrieveAPIView, DestroyAPIView
+from rest_framework.permissions import AllowAny
 
-from users.models import Payment
-from users.serializers import PaymentSerializer
+from users.models import Payment, User
+from users.serializers import PaymentSerializer, UserSerializer
 
 
 class PaymentListAPIView(ListAPIView):
@@ -12,3 +13,42 @@ class PaymentListAPIView(ListAPIView):
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_fields = ("course", "lesson", "method_payment")
     ordering_fields = ("date_payment",)
+
+
+class PaymentUpdateApiView(UpdateAPIView):
+    queryset = Payment.objects.all()
+    serializer_class = PaymentSerializer
+
+
+class UserCreateApiView(CreateAPIView):
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
+    permission_classes = (
+        AllowAny,
+    )  # для этого контроллера доступ для всех неавторизованных пользователей
+
+    def perform_create(self, serializer):
+        user = serializer.save(is_active=True)
+        user.set_password(
+            user.password
+        )  # хешируем пароль пользователя, чтобы не хранить его в открытом виде
+        user.save()
+
+class UserListApiView(ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class UserRetrieveApiView(RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class UserUpdateApiView(UpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class UserDestroyApiView(DestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
