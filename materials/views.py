@@ -36,11 +36,11 @@ class CourseViewSet(ModelViewSet):
             return Course.objects.all()
         return Course.objects.filter(owner=self.request.user)
 
+
 class LessonCreateApiView(CreateAPIView):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
     permission_classes = (~IsModerator, IsAuthenticated)
-
 
     def perform_create(self, serialazer):
         """метод автоматического сохранения пользователя в поле владельца"""
@@ -52,7 +52,10 @@ class LessonCreateApiView(CreateAPIView):
 class LessonListApiView(ListAPIView):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
-    permission_classes = (IsAuthenticated, IsModerator | IsOwner,)
+    permission_classes = (
+        IsAuthenticated,
+        IsModerator | IsOwner,
+    )
 
     def get_queryset(self):
         if self.request.user.is_staff == True:
@@ -63,16 +66,25 @@ class LessonListApiView(ListAPIView):
 class LessonRetrieveApiView(RetrieveAPIView):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
-    permission_classes = (IsAuthenticated, IsModerator | IsOwner,)
+    permission_classes = (
+        IsAuthenticated,
+        IsModerator | IsOwner,
+    )
 
 
 class LessonUpdateApiView(UpdateAPIView):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
-    permission_classes = (IsAuthenticated, IsModerator | IsOwner,)
+    permission_classes = (
+        IsAuthenticated,
+        IsModerator | IsOwner,
+    )
 
 
 class LessonDestroyApiView(DestroyAPIView):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
-    permission_classes = (IsAuthenticated, ~IsModerator | IsOwner,)
+    permission_classes = (
+        IsAuthenticated,
+        ~IsModerator | IsOwner,
+    )
