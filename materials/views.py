@@ -32,7 +32,7 @@ class CourseViewSet(ModelViewSet):
         return super().get_permissions()
 
     def get_queryset(self):
-        if self.request.user.is_staff == True:
+        if self.request.user.groups.filter(name="moderators").exists():
             return Course.objects.all()
         return Course.objects.filter(owner=self.request.user)
 
@@ -52,13 +52,9 @@ class LessonCreateApiView(CreateAPIView):
 class LessonListApiView(ListAPIView):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
-    permission_classes = (
-        IsAuthenticated,
-        IsModerator | IsOwner,
-    )
 
     def get_queryset(self):
-        if self.request.user.is_staff == True:
+        if self.request.user.groups.filter(name="moderators").exists():
             return Lesson.objects.all()
         return Lesson.objects.filter(owner=self.request.user)
 
