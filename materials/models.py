@@ -66,3 +66,27 @@ class Lesson(models.Model):
 
     def __str__(self):
         return self.title_lesson
+
+
+class Subscription(models.Model):
+    is_active = models.BooleanField(
+        blank=True,
+        null=True,
+        default=False,
+        verbose_name='флаг подписки на обновления',
+    )
+    user = models.ForeignKey(
+        "users.User",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name="пользователь",
+    )
+    course = models.ForeignKey(
+        Course,
+        on_delete=models.SET_NULL,
+        verbose_name="курс",
+        null=True,
+        blank=True,
+        related_name="subscriptions",
+    )
