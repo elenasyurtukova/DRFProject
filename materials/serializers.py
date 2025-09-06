@@ -3,6 +3,7 @@ from rest_framework.serializers import ModelSerializer
 
 from materials.models import Course, Lesson, Subscription
 from materials.validators import LessonVideo_linkValidator
+from users.serializers import UserSerializer
 
 
 class LessonSerializer(ModelSerializer):
@@ -25,25 +26,25 @@ class LessonShortSerializer(ModelSerializer):
 class CourseSerializer(ModelSerializer):
     lessons_count = serializers.SerializerMethodField()
     lessons = LessonShortSerializer(many=True, read_only=True)
+    subscription = serializers.SerializerMethodField()
 
     def get_lessons_count(self, obj):
         return obj.lessons.count()
+
+    def get_subscription(self, obj):
+        user = obj.owner
+        return Subscription.objects.all().filter(user=user).filter(course=obj).exists()
 
     class Meta:
         model = Course
         fields = "__all__"
 
 class SubscriptionSerializer(ModelSerializer):
-    subscription_status = serializers.SerializerMethodField()
+    user = UserSerializer(read_only=True)
+    course = CourseSerializer(read_only=True)
 
     class Meta:
         model = Subscription
         fields = "__all__"
-
-    def get_subscription_status(self, obj):
-        if obj.is_active==True:
-            return 'подписка активна'
-        else:
-            return 'подписка удалена'
 
 
