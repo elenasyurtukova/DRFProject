@@ -10,7 +10,7 @@ class LessonSerializer(ModelSerializer):
     class Meta:
         model = Lesson
         fields = "__all__"
-        validators = [LessonVideo_linkValidator(field='video_link')]
+        validators = [LessonVideo_linkValidator(field="video_link")]
 
 
 class LessonShortSerializer(ModelSerializer):
@@ -39,6 +39,7 @@ class CourseSerializer(ModelSerializer):
         model = Course
         fields = "__all__"
 
+
 class SubscriptionSerializer(ModelSerializer):
     user = UserSerializer(read_only=True)
     course = CourseSerializer(read_only=True)
@@ -46,5 +47,3 @@ class SubscriptionSerializer(ModelSerializer):
     class Meta:
         model = Subscription
         fields = "__all__"
-
-

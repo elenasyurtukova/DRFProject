@@ -7,7 +7,8 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
 from materials.models import Course, Subscription
-from materials.serializers import CourseSerializer, LessonSerializer, SubscriptionSerializer
+from materials.serializers import (CourseSerializer, LessonSerializer,
+                                   SubscriptionSerializer)
 from users.permissions import IsModerator, IsOwner
 
 from .models import Lesson
@@ -90,6 +91,7 @@ class LessonDestroyApiView(DestroyAPIView):
         ~IsModerator | IsOwner,
     )
 
+
 class SubscriptionCreateApiView(CreateAPIView):
     serializer_class = SubscriptionSerializer
 
@@ -101,10 +103,9 @@ class SubscriptionCreateApiView(CreateAPIView):
 
         if subs_item.exists():
             subs_item.delete()
-            message = 'Подписка удалена'
+            message = "Подписка удалена"
         else:
             Subscription.objects.create(user=user, course=course)
-            message = 'Подписка добавлена'
+            message = "Подписка добавлена"
 
         return Response({"message": message})
-
