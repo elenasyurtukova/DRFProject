@@ -8,7 +8,8 @@ from rest_framework.permissions import AllowAny
 
 from users.models import Payment, User
 from users.serializers import PaymentSerializer, UserSerializer
-from users.services import create_stripe_price, create_stripe_product, create_stripe_session
+from users.services import (create_stripe_price, create_stripe_product,
+                            create_stripe_session)
 
 
 class PaymentCreateApiView(CreateAPIView):
@@ -27,7 +28,6 @@ class PaymentCreateApiView(CreateAPIView):
         payment.session_id = session_id
         payment.link = payment_link
         payment.save()
-
 
 
 class PaymentListAPIView(ListAPIView):

@@ -1,6 +1,9 @@
 import stripe
+
 from config.settings import STRIPE_API_KEY
+
 stripe.api_key = STRIPE_API_KEY
+
 
 def create_stripe_product(title):
     product = stripe.Product.create(name=title)
@@ -15,6 +18,7 @@ def create_stripe_price(sum_payment, title):
         product_data={"name": title},
     )
     return price
+
 
 def create_stripe_session(price):
     """Создает сессию на оплату в страйпе"""

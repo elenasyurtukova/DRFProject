@@ -16,6 +16,7 @@ from users.permissions import IsModerator, IsOwner
 from .models import Lesson
 from .paginators import MyPagination
 
+
 class CourseViewSet(ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
