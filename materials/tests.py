@@ -18,7 +18,7 @@ class LessonTestCase(APITestCase):
             title_lesson="test_lesson_1",
             course=self.course,
             owner=self.user,
-            video_link="http://yuotu.be/video/8390046444092808725",
+            video_link="http://yuotube.com/video/ghfjgbkjbg",
         )
 
     def test_lesson_retrieve(self):
@@ -34,7 +34,7 @@ class LessonTestCase(APITestCase):
             "title_lesson": "test_lesson_2",
             "course": self.course.pk,
             "owner": self.user.pk,
-            "video_link": "http://yuotu.be/video/8390046444092808726",
+            "video_link": "http://yuotube.com/video/8390046444092808726",
         }
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -44,7 +44,7 @@ class LessonTestCase(APITestCase):
         url = reverse("materials:lesson_update", args=(self.lesson.pk,))
         data = {
             "title_lesson": "test_lesson_01",
-            "video_link": "http://yuotu.be/video/8390046444092808726",
+            "video_link": "http://yuotube.com/video/8390046444092808726",
         }
         response = self.client.patch(url, data)
         data = response.json()
