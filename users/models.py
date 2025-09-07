@@ -42,7 +42,7 @@ class Payment(models.Model):
     method_payment_choices = [(cash, "Наличные"), (transfer, "Перевод на счет")]
     user = models.ForeignKey(
         User,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         verbose_name="пользователь",
         null=True,
         blank=True,
@@ -55,7 +55,6 @@ class Payment(models.Model):
         null=True,
         blank=True,
     )
-
     lesson = models.ForeignKey(
         "materials.Lesson",
         on_delete=models.CASCADE,
@@ -70,3 +69,22 @@ class Payment(models.Model):
         default="Наличные",
         verbose_name="способ оплаты",
     )
+    session_id = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        verbose_name="id сессии"
+    )
+    link = models.URLField(
+        max_length=400,
+        blank=True,
+        null=True,
+        verbose_name="Ссылка на оплату"
+    )
+
+    class Meta:
+        verbose_name = "Оплата"
+        verbose_name_plural = "Оплаты"
+
+    def __str__(self):
+        return self.sum_payment
