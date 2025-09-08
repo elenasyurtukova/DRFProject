@@ -6,7 +6,7 @@ class LessonVideo_linkValidator:
         self.field = field
 
     def __call__(self, value):
-        our_string = "http://yuotu.be/"
+        our_string = "http://yuotube.com/"
         our_value = dict(value).get(self.field)
         if our_string not in str(our_value):
             raise ValidationError("Your video_link is wrong")
