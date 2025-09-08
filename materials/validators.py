@@ -1,12 +1,14 @@
+import re
+
 from rest_framework.serializers import ValidationError
 
 
 class LessonVideo_linkValidator:
-    def __init__(self, field):
-        self.field = field
+    @classmethod
+    def __fields__(cls):
+        return ['video_link']
 
     def __call__(self, value):
-        our_string = "http://yuotube.com/"
-        our_value = dict(value).get(self.field)
-        if our_string not in str(our_value):
-            raise ValidationError("Your video_link is wrong")
+        pattern = r'(https?://)?(www\.)?(youtube\.com|youtu\.be)/'
+        if not re.search(pattern, value):
+            raise ValidationError("Invalid video link! Must be a valid YouTube URL.")
