@@ -7,10 +7,11 @@ from users.serializers import UserSerializer
 
 
 class LessonSerializer(ModelSerializer):
+    video_link = serializers.CharField(validators=[LessonVideo_linkValidator()])
+
     class Meta:
         model = Lesson
         fields = "__all__"
-        validators = [LessonVideo_linkValidator(field="video_link")]
 
 
 class LessonShortSerializer(ModelSerializer):
