@@ -134,7 +134,7 @@ CELERY_TASK_TRACK_STARTED = True
 
 CELERY_TASK_TIME_LIMIT = 30 * 60
 
-EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_HOST = "smtp.yandex.ru"
 EMAIL_PORT = 465
 EMAIL_HOST_USER = "your@yandex.ru"
 EMAIL_HOST_PASSWORD = "password"
@@ -145,8 +145,10 @@ SERVER_EMAIL = EMAIL_HOST_USER
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 CELERY_BEAT_SCHEDULE = {
-    'task-name': {
-        'task': 'materials.tasks.disactive_users',  # Путь к задаче
-        'schedule': timedelta(weeks=2),  # Расписание выполнения задачи (например, каждые 10 минут)
+    "task-name": {
+        "task": "materials.tasks.disactive_users",  # Путь к задаче
+        "schedule": timedelta(
+            weeks=2
+        ),  # Расписание выполнения задачи (например, каждые 10 минут)
     },
 }
