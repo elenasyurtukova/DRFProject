@@ -1,5 +1,6 @@
 from django.utils.decorators import method_decorator
 from drf_yasg.utils import swagger_auto_schema
+from rest_framework.decorators import action
 from rest_framework.generics import (CreateAPIView, DestroyAPIView,
                                      ListAPIView, RetrieveAPIView,
                                      UpdateAPIView, get_object_or_404)
@@ -15,6 +16,7 @@ from users.permissions import IsModerator, IsOwner
 
 from .models import Lesson
 from .paginators import MyPagination
+from .tasks import send_info_about_update_course
 
 
 class CourseViewSet(ModelViewSet):
@@ -42,6 +44,16 @@ class CourseViewSet(ModelViewSet):
         if self.request.user.groups.filter(name="moderators").exists():
             return Course.objects.all()
         return Course.objects.filter(owner=self.request.user)
+
+    @action(detail=True, methods=("update",))
+    def update_course(self, pk):
+        course = get_object_or_404(Course, pk=pk)
+        subscriptions = Subscription.objects.filter(course=course)
+        users = [subscription.user.email for subscription in subscriptions]
+        for user in users:
+            send_info_about_update_course.delay(user.email)
+        serializer = self.get_serializer(course)
+        return Response(data=serializer.data)
 
 
 class LessonCreateApiView(CreateAPIView):
