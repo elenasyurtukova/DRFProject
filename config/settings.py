@@ -4,6 +4,7 @@ from pathlib import Path
 
 from django.conf.global_settings import STATICFILES_DIRS
 from dotenv import load_dotenv
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv(override=True)

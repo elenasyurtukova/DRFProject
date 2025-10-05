@@ -7,10 +7,17 @@ WORKDIR /app
 # Копируем файл зависимостей
 COPY pyproject.toml poetry.lock ./
 
+# Обновляем pip
+RUN pip install --upgrade pip
+
 # Устанавливаем Poetry
-RUN pip install poetry && \
-    poetry config virtualenvs.create false && \
-    poetry install --no-root --no-interaction
+RUN pip install poetry
+
+# Отключаем создание нового виртуального окружения
+RUN poetry config virtualenvs.create false
+
+# Устанавливаем только зависимости
+RUN poetry install --no-root
 
 # Копируем остальной код приложения
 COPY . .
