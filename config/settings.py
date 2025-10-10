@@ -3,7 +3,6 @@ import sys
 from datetime import timedelta
 from pathlib import Path
 
-from django.conf.global_settings import STATICFILES_DIRS
 from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -154,10 +153,10 @@ CELERY_BEAT_SCHEDULE = {
     },
 }
 
-if 'test' in sys.argv:
+if "test" in sys.argv:
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'test_db.sqlite3',
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "test_db.sqlite3",
         }
     }
