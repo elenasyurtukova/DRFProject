@@ -20,7 +20,7 @@ services:
         networks:
             - app_network
     db:
-        image: postgres:17
+        image: postgres:16
         container_name: postgres_db
         env_file:
             - ./.env
