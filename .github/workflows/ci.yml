@@ -97,7 +97,7 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no -vT ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
           sudo apt-get update
-          sudo apt-get install -y python-venv python-pip
+          sudo apt-get install -y python3-venv python3-pip
           EOF
 
       - name: Установка зависимостей
