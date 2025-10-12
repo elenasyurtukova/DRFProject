@@ -102,11 +102,11 @@ jobs:
 
       - name: Установка зависимостей
         run: |
-          ssh -o StrictHostKeyChecking=no -vT ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
           cd ${{ secrets.DEPLOY_DIR }}
-          python -m venv venv --clear
+          python3 -m venv venv --clear
           source venv/bin/activate
-          python -m pip install --upgrade pip
+          python3 -m pip install --upgrade pip
           pip install poetry
           poetry config virtualenvs.create false
           poetry install --no-root
