@@ -111,11 +111,19 @@ jobs:
           EOF
 
       - name: Применение миграций
+        env:
+          POSTGRES_HOST: ${{ secrets.DATABASE_HOST }}
+          POSTGRES_USER: ${{ secrets.DATABASE_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.DATABASE_NAME }}
+          POSTGRES_PORT: ${{ secrets.DATABASE_PORT }}
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
           cd ${{ secrets.DEPLOY_DIR }}
+          sudo apt install postgresql
           sudo service postgresql start
           sudo ufw allow ${{ secrets.DATABASE_PORT }}
+          
           PGPASSWORD='${{ secrets.DATABASE_PASSWORD }}' psql -h localhost -U ${{ secrets.DATABASE_USER }} -d ${{ secrets.DATABASE_NAME }} -c "SELECT 1;" || exit 1
           poetry run python3 manage.py migrate
           EOF
