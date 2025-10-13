@@ -104,7 +104,6 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
           cd ${{ secrets.DEPLOY_DIR }}
-          source venv/bin/activate
           sudo apt-get install poetry
           poetry config virtualenvs.create true
           poetry install --no-root
