@@ -116,25 +116,15 @@ jobs:
           poetry install --no-root
           EOF
 
-      - name: Применение миграций
+      - name: Deploy to server
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-          
-          sudo apt install postgresql
-          sudo service postgresql start
-          sudo ufw allow ${{ secrets.DATABASE_PORT }}
-          
-          docker stop lms_systems postgres redis || true
-          docker rm lms_systems postgres redis || true
-          docker network create mynetwork --driver bridge 2>/dev/null || true
-          docker run -d --network=mynetwork --name redis -p 6379:6379 redis:latest
-          docker run -d --network=mynetwork --name postgres \
-          -p 5432:5432 \
-          -e POSTGRES_DB=${{ secrets.DATABASE_NAME }} \
-          -e POSTGRES_USER=${{ secrets.DATABASE_USER }} \
-          -e POSTGRES_PASSWORD=${{ secrets.DATABASE_PASSWORD }} \
-          postgres:16.0
-          cd ${{ secrets.DEPLOY_DIR }}
-          sudo systemctl daemon-reload
-          sudo systemctl restart DRFProject
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} "mkdir -p /DRFProject" || false
+          scp -o StrictHostKeyChecking=no docker-compose.yml ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:/DRFProject
+          scp -o StrictHostKeyChecking=no nginx.conf ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:/DRFProject
+          scp -o StrictHostKeyChecking=no .env ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:/DRFProject
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << EOF
+          cd /DRFProject
+          docker-compose pull
+          docker-compose down --remove-orphans || true
+          docker-compose up -d --force-recreate
           EOF
