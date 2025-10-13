@@ -103,13 +103,12 @@ jobs:
       - name: Установка зависимостей
         run: |
           ssh -o StrictHostKeyChecking=no -vT ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-          sudo cd ${{ secrets.DEPLOY_DIR }}
-          python3 -m venv venv
+          cd ${{ secrets.DEPLOY_DIR }}
           source venv/bin/activate
           python3 -m pip install --upgrade pip
           pip install poetry
-          poetry config virtualenvs.create false
-          poetry install --no-root
+          poetry config virtualenvs.create true
+          poetry install
           EOF
 
       - name: Применение миграций
