@@ -41,8 +41,11 @@ jobs:
           poetry config virtualenvs.create false
           poetry install --no-root
 
-      - name: Run tests
-        run: python manage.py test
+      - name: Run tests and coverage tests
+        run: |
+          python manage.py test
+          poetry run coverage run --source='.' manage.py test
+          poetry run coverage report
         env:
           SECRET_KEY: test_secret_key
 
@@ -93,6 +96,9 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_KEY }}
 
+      - name: Check out code
+        uses: actions/checkout@v3
+
       - name: Установка необходимых пакетов на сервере
         run: |
           ssh -o StrictHostKeyChecking=no -vT ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
@@ -111,18 +117,24 @@ jobs:
           EOF
 
       - name: Применение миграций
-        env:
-          POSTGRES_HOST: ${{ secrets.DATABASE_HOST }}
-          POSTGRES_USER: ${{ secrets.DATABASE_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.DATABASE_NAME }}
-          POSTGRES_PORT: ${{ secrets.DATABASE_PORT }}
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
           cd ${{ secrets.DEPLOY_DIR }}
           sudo apt install postgresql
           sudo service postgresql start
           sudo ufw allow ${{ secrets.DATABASE_PORT }}
+          
+          docker stop lms_systems postgres redis || true
+          docker rm lms_systems postgres redis || true
+          docker network create mynetwork --driver bridge 2>/dev/null || true
+          docker run -d --network=mynetwork --name redis -p 6379:6379 redis:latest
+          docker run -d --network=mynetwork --name postgres \
+          -p 5432:5432 \
+          -e POSTGRES_DB=${{ secrets.DATABASE_NAME }} \
+          -e POSTGRES_USER=${{ secrets.DATABASE_USER }} \
+          -e POSTGRES_PASSWORD=${{ secrets.DATABASE_PASSWORD }} \
+          postgres:16.0
+          
           poetry run python3 manage.py migrate
           EOF
 
