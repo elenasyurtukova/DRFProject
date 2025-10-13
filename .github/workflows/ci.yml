@@ -118,6 +118,7 @@ jobs:
 
       - name: Применение миграций
         run: |
+          scp -o StrictHostKeyChecking=no drfproject.service ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:/etc/systemd/system/
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
           cd ${{ secrets.DEPLOY_DIR }}
           sudo apt install postgresql
