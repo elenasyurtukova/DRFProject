@@ -128,7 +128,7 @@ jobs:
       - name: Deploy to server
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << EOF
-          cd /DRFProject
+          cd ./DRFProject
           docker-compose pull
           docker-compose down --remove-orphans || true
           docker-compose up -d --force-recreate
