@@ -116,15 +116,17 @@ jobs:
           poetry install --no-root
           EOF
 
+      - name: copy file
+        uses: appleboy/scp-action@v0.1.7
+        with:
+            host: ${{ secrets.SERVER_IP }}
+            username: ${{ secrets.SSH_USER }}
+            key: ${{ secrets.SSH_KEY }}
+            source: "docker-compose.yml,.env, nginx/nginx.conf"
+            target: ${{ secrets.DEPLOY_DIR }}
+
       - name: Deploy to server
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << EOF
-          sudo mkdir -p /DRFProject
-          sudo chmod 755 /DRFProject
-          cd /DRFProject
-          scp -o StrictHostKeyChecking=no docker-compose.yml ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:/DRFProject
-          scp -o StrictHostKeyChecking=no nginx.conf ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:/DRFProject
-          scp -o StrictHostKeyChecking=no .env ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:/DRFProject
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << EOF
           cd /DRFProject
           docker-compose pull
