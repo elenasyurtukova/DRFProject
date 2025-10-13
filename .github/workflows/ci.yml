@@ -118,7 +118,6 @@ jobs:
 
       - name: Применение миграций
         run: |
-          scp -o StrictHostKeyChecking=no drfproject.service ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:/etc/systemd/system/
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
           cd ${{ secrets.DEPLOY_DIR }}
           sudo apt install postgresql
@@ -135,19 +134,7 @@ jobs:
           -e POSTGRES_USER=${{ secrets.DATABASE_USER }} \
           -e POSTGRES_PASSWORD=${{ secrets.DATABASE_PASSWORD }} \
           postgres:16.0
-          
-          poetry run python3 manage.py migrate
-          EOF
 
-      - name: Сбор статических файлов
-        run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-          cd ${{ secrets.DEPLOY_DIR }}
-          poetry run python manage.py collectstatic --noinput
-          EOF
-
-      - name: Перезапуск приложения
-        run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-          sudo systemctl restart myapp.service
+          sudo systemctl daemon-reload
+          sudo systemctl restart DRFProject
           EOF
