@@ -123,7 +123,7 @@ jobs:
           scp -o StrictHostKeyChecking=no nginx.conf ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:/DRFProject
           scp -o StrictHostKeyChecking=no .env ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:/DRFProject
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << EOF
-          cd /DRFProject
+          cd ${{ secrets.DEPLOY_DIR }}
           docker-compose pull
           docker-compose down --remove-orphans || true
           docker-compose up -d --force-recreate
