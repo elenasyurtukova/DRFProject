@@ -123,8 +123,6 @@ jobs:
           sudo apt install postgresql
           sudo service postgresql start
           sudo ufw allow ${{ secrets.DATABASE_PORT }}
-          
-          PGPASSWORD='${{ secrets.DATABASE_PASSWORD }}' psql -h localhost -U ${{ secrets.DATABASE_USER }} -d ${{ secrets.DATABASE_NAME }} -c "SELECT 1;" || exit 1
           poetry run python3 manage.py migrate
           EOF
 
