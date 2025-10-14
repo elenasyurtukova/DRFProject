@@ -20,10 +20,13 @@ services:
         networks:
             - app_network
     db:
-        image: postgres:17
+        image: postgres:16
         container_name: postgres_db
-        env_file:
-            - ./.env
+        environment:
+            POSTGRES_DB: ${DATABASE_NAME}
+            POSTGRES_USER: ${DATABASE_USER}
+            POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+
         ports:
           - "5432:5432"
         volumes:

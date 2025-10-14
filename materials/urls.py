@@ -1,6 +1,5 @@
 from django.urls import path
 from rest_framework.routers import SimpleRouter
-from rest_framework.urls import app_name
 
 from materials.apps import MaterialsConfig
 from materials.views import (CourseViewSet, LessonCreateApiView,

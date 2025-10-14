@@ -9,7 +9,7 @@ from users.models import User
 def disactive_users():
     users = User.objects.filter(is_active=True)
     for user in users:
-        if user.last_login == None:
+        if user.last_login is None:
             break
         else:
             if timezone.now() - user.last_login > timedelta(days=30):

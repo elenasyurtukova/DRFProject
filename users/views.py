@@ -1,5 +1,4 @@
 from django_filters.rest_framework import DjangoFilterBackend
-from requests import session
 from rest_framework.filters import OrderingFilter
 from rest_framework.generics import (CreateAPIView, DestroyAPIView,
                                      ListAPIView, RetrieveAPIView,
@@ -8,8 +7,7 @@ from rest_framework.permissions import AllowAny
 
 from users.models import Payment, User
 from users.serializers import PaymentSerializer, UserSerializer
-from users.services import (create_stripe_price, create_stripe_product,
-                            create_stripe_session)
+from users.services import create_stripe_price, create_stripe_session
 
 
 class PaymentCreateApiView(CreateAPIView):
@@ -22,7 +20,6 @@ class PaymentCreateApiView(CreateAPIView):
             title = payment.lesson.title_lesson
         else:
             title = payment.course.title_course
-        product = create_stripe_product(title)
         price = create_stripe_price(payment.sum_payment, title)
         session_id, payment_link = create_stripe_session(price)
         payment.session_id = session_id
